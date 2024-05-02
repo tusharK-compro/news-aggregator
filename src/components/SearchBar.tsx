@@ -1,10 +1,11 @@
+import { TextField } from '@mui/material';
 import React from 'react';
 
 function SearchBar() {
     return (
-        <span>
-            Search Bar
-        </span>
+        <TextField id="outlined-basic" label="Search" variant="outlined" />
+
+      
     );
 }
 

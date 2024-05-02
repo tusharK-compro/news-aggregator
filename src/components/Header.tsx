@@ -1,12 +1,13 @@
 import React from 'react';
 import SearchBar from './SearchBar';
+import { Typography } from '@mui/material';
 
 function Header() {
     return (
         <div>
-            <span>
+            <Typography variant='h3'>
                 News Aggregator
-            </span>
+            </Typography>
             <SearchBar/>
         </div>
     );
