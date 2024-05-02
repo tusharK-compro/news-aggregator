@@ -1,3 +1,5 @@
+import TheGuardianAdService from './services/TheGuardianAdService';
+import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import { Button, Typography, styled } from '@mui/material';
 import NewsComponent from './components/NewsComponent';
@@ -21,7 +23,13 @@ const StyledHeadComponent=styled('div')(()=>({
 const StyledFilterButton=styled(Button)(()=>({
     textTransform:'none',
 }))
+
 function Home() {
+        const [data, setData] = useState(Array);
+        useEffect(()=>{
+            setData(TheGuardianAdService({},false));
+            console.log(data);
+        },[])
     return (<>
             <Header/>
             <StyledFeed>
