@@ -1,20 +1,51 @@
-import React from 'react';
 import Header from './components/Header';
-import { Button } from '@mui/material';
+import { Button, Typography, styled } from '@mui/material';
 import NewsComponent from './components/NewsComponent';
+import FilterDialog from './components/FilterDialog';
+const StyledFeed= styled('div')(({theme})=>({
+    padding:'20px',
 
+    [theme.breakpoints.up('sm')]: {
+        padding:'20px 50px'
+        
+      },
+}))
+
+const StyledHeadComponent=styled('div')(()=>({
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'space-between',
+    marginBottom:20
+}))
+
+const StyledFilterButton=styled(Button)(()=>({
+    textTransform:'none',
+}))
 function Home() {
-    return (
-        <div>
+    return (<>
             <Header/>
-            <h1>    
-                News Feed
-            </h1>    
-            <Button variant='contained'>Back to feed</Button>
+            <StyledFeed>
+            <StyledHeadComponent>
+            <Typography marginBottom={1} marginLeft={1} textAlign='left' variant='h5' component='div'>News feed</Typography>
+            {/* <StyledFilterButton
+                variant="text"
+                color="primary"
+                startIcon={<TuneOutlinedIcon />}
+                >
+                Preferences
+                </StyledFilterButton> */}
+                <FilterDialog/>
+            </StyledHeadComponent>
+            
 
-            <NewsComponent title='Goldy Brar Shot Dead' content='Oh jatt da muqabala Dass mainu kithe ae ni Jatt da muqabala Dass mainu kithe ae ni Jatt da muqabala Dass mainu kithe'/>
+            <NewsComponent />
+            <NewsComponent />
+            <NewsComponent />
+            <NewsComponent />
+
+            </StyledFeed>
                 
-        </div>
+        </>
     );
 }
 
