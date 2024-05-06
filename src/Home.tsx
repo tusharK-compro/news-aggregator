@@ -1,9 +1,12 @@
 import TheGuardianAdService from './services/TheGuardianAdService';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Header from './components/Header';
-import { Button, Typography, styled } from '@mui/material';
+import { Box, Button, CircularProgress, Typography, styled } from '@mui/material';
 import NewsComponent from './components/NewsComponent';
 import FilterDialog from './components/FilterDialog';
+import {NYEverything, NYSearch} from './services/NYTAdService';
+import { NewsAPIEverything } from './services/NewsAPIAdService';
+import {NewsService} from './services/NewsService';
 const StyledFeed= styled('div')(({theme})=>({
     padding:'20px',
 
@@ -20,16 +23,20 @@ const StyledHeadComponent=styled('div')(()=>({
     marginBottom:20
 }))
 
-const StyledFilterButton=styled(Button)(()=>({
-    textTransform:'none',
-}))
+
 
 function Home() {
         const [data, setData] = useState(Array);
-        useEffect(()=>{
-            setData(TheGuardianAdService({},false));
-            console.log(data);
-        },[])
+        const fetchInfo = useCallback(async () => {
+            const res = await NewsService('everything');
+            setData( res );
+          }, []);
+          
+          useEffect(() => {
+            fetchInfo();
+          }, [fetchInfo]);
+        console.log(data)
+
     return (<>
             <Header/>
             <StyledFeed>
@@ -44,12 +51,14 @@ function Home() {
                 </StyledFilterButton> */}
                 <FilterDialog/>
             </StyledHeadComponent>
-            
+            {data.length > 0 ? (data.map((news:any)=>{
 
-            <NewsComponent />
-            <NewsComponent />
-            <NewsComponent />
-            <NewsComponent />
+                return <NewsComponent title={news.title} desc={news.description} extLink={news.webUrl}/>
+            })):  <Box sx={{ height:'100vh', py:22}}>
+      <CircularProgress />
+    </Box>}
+
+            
 
             </StyledFeed>
                 

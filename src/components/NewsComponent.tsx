@@ -7,6 +7,12 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 
+interface NewsComponentProps{
+  title : string,
+  desc : string,
+  extLink?:string
+
+}
 
 const NewsCard = styled(Card)(()=>({
     width:'100%',
@@ -20,22 +26,21 @@ const StyledCardContent= styled(CardContent)(()=>({
     paddingBottom:'8px!important'
 }))
 
-export default function NewsComponent() {
+export default function NewsComponent(props:NewsComponentProps) {
+  const {title,desc,extLink}=props;
   return (
     <NewsCard >
         <StyledCardContent >
           <Typography textAlign='left' variant="h5" component="div">
-            Notorious gangster Goldy Brar is alive: US cops
+            {title}
           </Typography>
           <Typography marginTop={1} textAlign='left' variant="body2" color="text.secondary">
-            Goldy Brar, the notorious gangster based in Canada, is alive, contrary to reports of his death in a shooting incident that happened in California that circulated on Tuesday, the United States cops confirmed.
-            The Fresno police department has now responded to the reports, saying that they are "untrue". 
-            In response to a query, Lieutenant William J Dooley said, "If you are inquiring because of the online chatter claiming that the shooting victim is 'Goldy Brar', we can confirm that this is absolutely not true."
+            {desc}
           </Typography>
           <Button
             sx={{textAlign:'right', textTransform:'none'}}
             component="a"
-            href=''
+            href={extLink}
             target="_blank"
             endIcon={<LaunchIcon />}
             >

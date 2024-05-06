@@ -12,6 +12,7 @@ import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Filter from './Filter';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -20,40 +21,38 @@ interface TabPanelProps {
 }
 
 function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index } = props;
 
 
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+        <Box sx={{ p: 1 }}>
+          <Typography sx={{display:{ xs: 'block', sm: 'flex' }}}>{children}</Typography>
         </Box>
       )}
     </div>
   );
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
+  '& .MuiPaper-root':{
+    [theme.breakpoints.down('sm')]: {
+      height:'100%',
+      margin:'20px'
+    },
+  },
+  
 }));
 
 
@@ -72,16 +71,26 @@ export default function FilterDialog() {
     setOpen(false);
   };
 
+  const handleClear = () => {
+    
+  }
+
   return (
     <React.Fragment>
       <Button
             variant="text"
             color="primary"
-            sx={{textTransform:'none'}}
+            sx={{textTransform:'none', display: { xs: 'none', sm: 'flex' }}}
             onClick={handleClickOpen}
             startIcon={<TuneOutlinedIcon />}
             >
             Preferences
+        </Button>
+        <Button
+            sx={{ display: { xs: 'block', sm: 'none' }}}
+            onClick={handleClickOpen}
+            startIcon={<TuneOutlinedIcon />}
+            >
         </Button>
       <BootstrapDialog
         onClose={handleClose}
@@ -105,27 +114,32 @@ export default function FilterDialog() {
         </IconButton>
         <DialogContent dividers>
         <Box
-      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 160 , minWidth:900}}
+      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', minHeight: 160, minWidth:{ sm: '600px' } }}
     >
       <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
+        sx={{overflow:'unset'}}
       >
-        <Tab label="Sources" {...a11yProps(0)} />
-        <Tab label="Categories" {...a11yProps(1)} />
-        <Tab label="Authors" {...a11yProps(2)} />
+        <Tab label="Sources"  />
+        <Tab label="Categories" />
+        <Tab label="Authors"  />
      
       </Tabs>
       <TabPanel value={value} index={0}>
-        
+        <Filter/>
+        <Filter/>
+        <Filter/>
+        <Filter/>
       </TabPanel>
       <TabPanel value={value} index={1}>
+      <Filter/>
         
       </TabPanel>
       <TabPanel value={value} index={2}>
+      <Filter/>
         
       </TabPanel>
   
@@ -133,7 +147,10 @@ export default function FilterDialog() {
         
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+         <Button sx={{textTransform:'none'}} onClick={handleClear} >
+            Clear All
+          </Button>
+          <Button sx={{textTransform:'none'}} autoFocus onClick={handleClose}>
             Apply
           </Button>
         </DialogActions>

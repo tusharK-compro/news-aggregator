@@ -16,3 +16,7 @@ export interface options{
     category?: Array<string>;
     sources?: Array<string>;
 }
+export interface newsListType{
+    Everything:string,
+    Search:string
+}

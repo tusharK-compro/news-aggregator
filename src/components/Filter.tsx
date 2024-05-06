@@ -1,10 +1,19 @@
-import React from 'react';
+import { Checkbox, FormControlLabel, FormGroup, styled } from '@mui/material';
 
+
+const FilterGroup = styled(FormGroup)(()=>({
+  padding:'0 10px'  
+}))
 function Filter() {
     return (
-        <div>
+        <>
+          <FilterGroup>
+            <FormControlLabel control={<Checkbox  />} label="Label" />
+            <FormControlLabel  control={<Checkbox />} label="Label" />
+            <FormControlLabel  control={<Checkbox />} label="Label" />
+        </FilterGroup>
             
-        </div>
+        </>
     );
 }
 
