@@ -1,6 +1,6 @@
 import { data, options } from "./../types";
 const NYSearch = async (searchQuery: string) => {
-  let finalData: Array<any> = [];
+  let finalData: Array<data> = [];
 
   const API_KEY = "58BLGdQmfqvBkcnJhlNRI23znYnLIl6y";
   await fetch(
@@ -25,7 +25,7 @@ const NYSearch = async (searchQuery: string) => {
 
 export const NewsAPISearch = async () => {
   const API_KEY = "ebbbdff75baf47398fff8cda679b2338";
-  let finalData: Array<any> = [];
+  let finalData: Array<data> = [];
 
   await fetch(`https://newsapi.org/v2/everything?q=apple&apiKey=` + API_KEY)
     .then((response) => response.json())
@@ -57,7 +57,7 @@ export const NewsServiceEverything = async (
     const API_KEY_NY = "58BLGdQmfqvBkcnJhlNRI23znYnLIl6y";
     await fetch(
       `https://api.nytimes.com/svc/news/v3/content/all/all.json?api-key=` +
-        API_KEY_NY
+      API_KEY_NY
     )
       .then((response) => response.json())
       .then((data) => {
@@ -78,10 +78,10 @@ export const NewsServiceEverything = async (
     const API_KEY_TG = "f368d3ab-5350-40ae-9ecb-16ee8c8cdaf9";
     await fetch(
       `https://content.guardianapis.com/search?` +
-        (searchKeyword ? "q=" + searchKeyword : "") +
-        "&page-size=10" +
-        "&api-key=" +
-        API_KEY_TG
+      (searchKeyword ? "q=" + searchKeyword : "") +
+      "&page-size=10" +
+      "&api-key=" +
+      API_KEY_TG
     )
       .then((response) => response.json())
       .then((data) => {
