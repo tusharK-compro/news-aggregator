@@ -10,7 +10,7 @@ export const NewsSearch = async (searchQuery?:String, options?: options, loadMor
   const date = options?.date;
   const sources = options?.sources?.join();
   let finalData: Array<data> = [];
-  await fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json`+(searchQuery?`q=${searchQuery}`:'q=all') + 
+  await fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?`+(searchQuery?`q=${searchQuery}`:'q=all') + 
     (category ? "q=" + category : "") +
     (loadMore ? "&page=" + page : "") +
     "&page-size=10" +
