@@ -31,7 +31,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 1 }}>
-          <Typography sx={{display:{ xs: 'block', sm: 'flex' }}}>{children}</Typography>
+          <Typography sx={{ display: { xs: 'block', sm: 'flex' } }}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -46,13 +46,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
-  '& .MuiPaper-root':{
+  '& .MuiPaper-root': {
     [theme.breakpoints.down('sm')]: {
-      height:'100%',
-      margin:'20px'
+      height: '100%',
+      margin: '20px'
     },
   },
-  
+
 }));
 
 
@@ -72,26 +72,26 @@ export default function FilterDialog() {
   };
 
   const handleClear = () => {
-    
+
   }
 
   return (
     <React.Fragment>
       <Button
-            variant="text"
-            color="primary"
-            sx={{textTransform:'none', display: { xs: 'none', sm: 'flex' }}}
-            onClick={handleClickOpen}
-            startIcon={<TuneOutlinedIcon />}
-            >
-            Preferences
-        </Button>
-        <Button
-            sx={{ display: { xs: 'block', sm: 'none' }}}
-            onClick={handleClickOpen}
-            startIcon={<TuneOutlinedIcon />}
-            >
-        </Button>
+        variant="text"
+        color="primary"
+        sx={{ textTransform: 'none', display: { xs: 'none', sm: 'flex' } }}
+        onClick={handleClickOpen}
+        startIcon={<TuneOutlinedIcon />}
+      >
+        Preferences
+      </Button>
+      <Button
+        sx={{ display: { xs: 'block', sm: 'none' } }}
+        onClick={handleClickOpen}
+        startIcon={<TuneOutlinedIcon />}
+      >
+      </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -113,44 +113,44 @@ export default function FilterDialog() {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-        <Box
-      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', minHeight: 160, minWidth:{ sm: '600px' } }}
-    >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        sx={{overflow:'unset'}}
-      >
-        <Tab label="Sources"  />
-        <Tab label="Categories" />
-        <Tab label="Authors"  />
-     
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <Filter/>
-        <Filter/>
-        <Filter/>
-        <Filter/>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-      <Filter/>
-        
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-      <Filter/>
-        
-      </TabPanel>
-  
-    </Box>
-        
+          <Box
+            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', minHeight: 160, minWidth: { sm: '600px' } }}
+          >
+            <Tabs
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              sx={{ overflow: 'unset' }}
+            >
+              <Tab label="Sources" />
+              <Tab label="Categories" />
+              <Tab label="Authors" />
+
+            </Tabs>
+            <TabPanel value={value} index={0}>
+              <Filter />
+              <Filter />
+              <Filter />
+              <Filter />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Filter />
+
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              <Filter />
+
+            </TabPanel>
+
+          </Box>
+
         </DialogContent>
         <DialogActions>
-         <Button sx={{textTransform:'none'}} onClick={handleClear} >
+          <Button sx={{ textTransform: 'none' }} onClick={handleClear} >
             Clear All
           </Button>
-          <Button sx={{textTransform:'none'}} autoFocus onClick={handleClose}>
+          <Button sx={{ textTransform: 'none' }} autoFocus onClick={handleClose}>
             Apply
           </Button>
         </DialogActions>

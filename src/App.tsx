@@ -1,12 +1,9 @@
-import React from 'react';
 import './App.css';
 import Home from './Home';
-import { Button } from '@mui/material';
 function App() {
   return (
     <div className="App">
-      <Home/>
-      
+      <Home />
     </div>
   );
 }

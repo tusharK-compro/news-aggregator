@@ -52,12 +52,12 @@ export default function Header() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" >
-        <Toolbar sx={{display:'flex', justifyContent:'space-between'}}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{  display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             NEWS AGGREGATOR
           </Typography>
@@ -65,7 +65,7 @@ export default function Header() {
             variant="h6"
             noWrap
             component="div"
-            sx={{  display: { xs: 'block', sm: 'none' } }}
+            sx={{ display: { xs: 'block', sm: 'none' } }}
           >
             NA
           </Typography>

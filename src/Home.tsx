@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import Header from "./components/Header";
 import {
   Box,
@@ -40,11 +40,10 @@ function Home() {
       <StyledFeed>
         <StyledHeadComponent>
           <Typography
-  
             textAlign="left"
             variant="h5"
             component="div"
-            sx={{  margin: { xs: '0', sm: '0 0 8px' } }}
+            sx={{ margin: { xs: '0', sm: '0 0 8px' } }}
           >
             News feed
           </Typography>
