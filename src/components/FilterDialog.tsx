@@ -13,11 +13,15 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Filter from "./Filter";
+import { NewsServiceEverything } from "../services/NewsService";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+interface FilterDialogprops{
+  setData?:any
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -51,19 +55,23 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function FilterDialog() {
+export default function FilterDialog(props:FilterDialogprops) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  const {setData}=props;
   const preferencesList={
     sources:['Yahoo Entertainment','Gizmodo.com','BBC News','Wired'],
     categories:['Sports','Celebrity','World','Politics','Wildlife','Art','Terrorism','Film','Medical',"Technology"],
     authors:['Lawrence Bonk','Will Shanklin','Andrew Webster','James Whitbrook','Tom Warren']
   }
   const [preferences, setPreferences] = React.useState({
-    sources: {},
-    categories: {},
-    authors: {},
+    sources: [],
+    categories: [],
+    authors: []
   });
+   React.useEffect(()=>{
+      console.log(preferences)
+   },[preferences])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -73,10 +81,23 @@ export default function FilterDialog() {
     setOpen(true);
   };
   const handleClose = () => {
-    setOpen(false);
   };
 
   const handleClear = () => {};
+  const handlePreferences = ()=>{
+    let category = preferences?.categories?.length>0 ? preferences.categories:undefined ;
+    let sources =  preferences?.sources?.length>0 ? preferences.sources:undefined ;
+    let author =  preferences?.authors?.length>0 ? preferences.authors:undefined ;;
+
+  
+    NewsServiceEverything({category,sources,author}).then((res) => {
+       setData(res);
+    });
+    setOpen(false);
+
+    
+  }
+  console.log("pref ", preferences );
 
   return (
     <React.Fragment>
@@ -134,14 +155,13 @@ export default function FilterDialog() {
               <Tab label="Authors" />
             </Tabs>
             <TabPanel value={value} index={0}>
-              <Filter labels={preferencesList.sources}/>
+              <Filter setPreference={setPreferences} type="sources" preference={preferences} labels={preferencesList.sources}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
-               <Filter labels={preferencesList.categories}/>
+            <Filter setPreference={setPreferences} type="categories" preference={preferences} labels={preferencesList.categories}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <Filter labels={preferencesList.authors}/>
-
+            <Filter setPreference={setPreferences} type="authors" preference={preferences} labels={preferencesList.authors}/>
             </TabPanel>
           </Box>
         </DialogContent>
@@ -152,7 +172,7 @@ export default function FilterDialog() {
           <Button
             sx={{ textTransform: "none" }}
             autoFocus
-            onClick={handleClose}
+            onClick={handlePreferences}
           >
             Apply
           </Button>
