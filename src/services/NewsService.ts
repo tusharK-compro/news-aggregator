@@ -1,5 +1,5 @@
 import { data, options } from "./../types";
-const NYSearch = async (searchQuery: string) => {
+const NYSearch = async (searchQuery: string, loadMore:boolean) => {
   let finalData: Array<data> = [];
 
   const API_KEY = "58BLGdQmfqvBkcnJhlNRI23znYnLIl6y";
@@ -47,14 +47,12 @@ export const NewsAPISearch = async () => {
     .catch((error) => console.error("Error:", error));
   return finalData;
 };
-export const NewsServiceEverything = async (
-  type: string,
-  searchKeyword?: string,
-  options?: options
-) => {
+export const NewsServiceEverything = async(options?: options, loadMore?:boolean, page?: number) => {
   let finalData: Array<any> = [];
-  if (type == "everything") {
-    const API_KEY_NY = "58BLGdQmfqvBkcnJhlNRI23znYnLIl6y";
+  const category = options?.category?.join();
+  const author = options?.author?.join();
+  const sources = options?.sources?.join();
+  const API_KEY_NY = "58BLGdQmfqvBkcnJhlNRI23znYnLIl6y";
     await fetch(
       `https://api.nytimes.com/svc/news/v3/content/all/all.json?api-key=` +
       API_KEY_NY
@@ -77,11 +75,7 @@ export const NewsServiceEverything = async (
 
     const API_KEY_TG = "f368d3ab-5350-40ae-9ecb-16ee8c8cdaf9";
     await fetch(
-      `https://content.guardianapis.com/search?` +
-      (searchKeyword ? "q=" + searchKeyword : "") +
-      "&page-size=10" +
-      "&api-key=" +
-      API_KEY_TG
+      `https://content.guardianapis.com/search?`+ (category ? "&sectionName=" + category : "") +(loadMore ? "&page=" + page : "")+"&page-size=10" +"&api-key=" + API_KEY_TG
     )
       .then((response) => response.json())
       .then((data) => {
@@ -121,7 +115,7 @@ export const NewsServiceEverything = async (
         });
       })
       .catch((error) => console.error("Error:", error));
-  }
+  
 
   return finalData;
 };

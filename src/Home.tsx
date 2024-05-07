@@ -28,7 +28,7 @@ function Home() {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
-    NewsServiceEverything("everything").then((res) => {
+    NewsServiceEverything().then((res) => {
       setData(res);
     });
   }, []);
