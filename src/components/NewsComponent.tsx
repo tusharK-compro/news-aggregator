@@ -14,20 +14,27 @@ interface NewsComponentProps{
 
 }
 
-const NewsCard = styled(Card)(()=>({
+const NewsCard = styled(Card)(({theme})=>({
     width:'100%',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
     marginBottom:'20px',
+    [theme.breakpoints.down('sm')]: {
+      boxShadow: 'unset',
+    }
 
 }))
 
-const StyledCardContent= styled(CardContent)(()=>({
+const StyledCardContent= styled(CardContent)(({theme})=>({
     textAlign:'end',
-    paddingBottom:'8px!important'
+    paddingBottom:'8px!important',
+    [theme.breakpoints.down('sm')]: {
+      padding:0
+    }
 }))
 
 export default function NewsComponent(props:NewsComponentProps) {
   const {title,desc,extLink}=props;
+  if(title)
   return (
     <NewsCard >
         <StyledCardContent >
@@ -49,4 +56,5 @@ export default function NewsComponent(props:NewsComponentProps) {
         </StyledCardContent>
     </NewsCard>
   );
+  else return <></>
 }
