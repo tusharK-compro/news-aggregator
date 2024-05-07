@@ -3,15 +3,18 @@ const API_KEY_NA = "ebbbdff75baf47398fff8cda679b2338";
 const API_KEY_NY = "58BLGdQmfqvBkcnJhlNRI23znYnLIl6y";
 const API_KEY_TG = "f368d3ab-5350-40ae-9ecb-16ee8c8cdaf9";
 
-export const NewsSearch = async (searchQuery:string, options: options, loadMore: boolean,
-  page:number
+export const NewsSearch = async (searchQuery?:String, options?: options, loadMore?: Boolean,
+  page?:Number
 ) => {
   const category = options?.category?.join();
   const date = options?.date;
   const sources = options?.sources?.join();
   let finalData: Array<data> = [];
-  await fetch(
-    `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchQuery}&api-key=${API_KEY_NY}`
+  await fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json`+(searchQuery?`q=${searchQuery}`:'q=all') + 
+    (category ? "q=" + category : "") +
+    (loadMore ? "&page=" + page : "") +
+    "&page-size=10" +
+    `&api-key=${API_KEY_NY}`
   )
     .then((response) => response.json())
     .then((data) => {
@@ -25,10 +28,13 @@ export const NewsSearch = async (searchQuery:string, options: options, loadMore:
         };
         finalData.push(value);
       });
+      console.log("nytimes",page,finalData);
     })
     .catch((error) => console.error("Error:", error));
   
-  await fetch(`https://newsapi.org/v2/everything?q=apple&apiKey=` + API_KEY_NA)
+  await fetch(`https://newsapi.org/v2/everything?` + (searchQuery?`q=${searchQuery}`:'q=all') +(loadMore ? "&page=" + page : "") +
+  "&pageSize=10" +
+  "&apiKey=" + API_KEY_NA)
   .then((response) => response.json())
   .then((data) => {
       data.articles.forEach((data: any, index: number) => {
@@ -44,9 +50,10 @@ export const NewsSearch = async (searchQuery:string, options: options, loadMore:
           finalData.push(value);
         }
       });
+      console.log("newsapi",page,finalData);
     })
     .catch((error) => console.error("Error:", error));
-    fetch(`https://content.guardianapis.com/search?` + (searchQuery ? "q=" + searchQuery : "") + (category ? "&sectionName=" + category : "") + (date ? "&from-date=" + date : "") +(loadMore ? "&page=" + page : "")+"&page-size=10" +"&api-key=" + API_KEY_TG)
+    await fetch(`https://content.guardianapis.com/search?` + (searchQuery ? "q=" + searchQuery : "") + (category ? "&sectionName=" + category : "") + (date ? "&from-date=" + date : "") +(loadMore ? "&page=" + page : "")+"&page-size=10" +"&api-key=" + API_KEY_TG)
         .then(response => response.json())
         .then(data => {
             data.response.results.forEach((data: any, index: number) => {
@@ -60,6 +67,7 @@ export const NewsSearch = async (searchQuery:string, options: options, loadMore:
                 finalData.push(value);
 
             })
+            console.log("guardian",page,finalData);
         })
         .catch(error => console.error('Error:', error));
   return finalData;
@@ -80,9 +88,7 @@ export const NewsServiceEverything = async (options?: options, loadMore?: boolea
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
       data.articles.forEach((data: any, index: number) => {
-        console.log(data)
         if (data.title != "[Removed]") {
           let value = {
             id: index,
@@ -95,6 +101,7 @@ export const NewsServiceEverything = async (options?: options, loadMore?: boolea
           finalData.push(value);
         }
       });
+      console.log("newsapi",page,finalData);
     })
     .catch((error) => console.error("Error:", error));
   

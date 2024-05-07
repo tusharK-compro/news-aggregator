@@ -2,13 +2,14 @@ import {useEffect, useState } from "react";
 import Header from "./components/Header";
 import {
   Box,
+  Button,
   CircularProgress,
   Typography,
   styled,
 } from "@mui/material";
 import NewsComponent from "./components/NewsComponent";
 import FilterDialog from "./components/FilterDialog";
-import { NewsServiceEverything } from "./services/NewsService";
+import { NewsSearch, NewsServiceEverything } from "./services/NewsService";
 const StyledFeed = styled("div")(({ theme }) => ({
   padding: "20px",
 
@@ -25,7 +26,14 @@ const StyledHeadComponent = styled("div")(() => ({
 }));
 
 function Home() {
+  const handleLoadMore = () =>{
+    setPage(page+1);
+    NewsSearch("run",{},true,page).then((res) => {
+      setData((prev:any)=>[...prev,...res]);
+    });
+  }
   const [data, setData] = useState<any>();
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     NewsServiceEverything().then((res) => {
@@ -57,7 +65,9 @@ function Home() {
           <FilterDialog />
         </StyledHeadComponent>
         {data && data.length > 1 ? (
-          data.map((news: any) => {
+          <>
+          {
+            data.map((news: any) => {
             return (
               <NewsComponent
                 title={news.title}
@@ -66,6 +76,9 @@ function Home() {
               />
             );
           })
+          }
+          <Button onClick={handleLoadMore}>Load More</Button>
+          </>
         ) : (
           <Box sx={{ height: "100vh", py: 22 }}>
             <CircularProgress />
