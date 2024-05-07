@@ -28,7 +28,6 @@ export const NewsSearch = async (searchQuery?:String, options?: options, loadMor
         };
         finalData.push(value);
       });
-      console.log("nytimes",page,finalData);
     })
     .catch((error) => console.error("Error:", error));
   
@@ -50,7 +49,6 @@ export const NewsSearch = async (searchQuery?:String, options?: options, loadMor
           finalData.push(value);
         }
       });
-      console.log("newsapi",page,finalData);
     })
     .catch((error) => console.error("Error:", error));
     await fetch(`https://content.guardianapis.com/search?` + (searchQuery ? "q=" + searchQuery : "") + (category ? "&sectionName=" + category : "") + (date ? "&from-date=" + date : "") +(loadMore ? "&page=" + page : "")+"&page-size=10" +"&api-key=" + API_KEY_TG)
@@ -67,7 +65,6 @@ export const NewsSearch = async (searchQuery?:String, options?: options, loadMor
                 finalData.push(value);
 
             })
-            console.log("guardian",page,finalData);
         })
         .catch(error => console.error('Error:', error));
   return finalData;
@@ -77,11 +74,21 @@ export const NewsServiceEverything = async (options?: options, loadMore?: boolea
   const category = options?.category?.join();
   const author = options?.author?.join();
   const sources = options?.sources?.join();
+  console.log(
+    `http://newsapi.org/v2/everything?` +
+    (category ? "q=" + category : "q=all") +
+    (loadMore ? "&page=" + page : "") +
+    "&pageSize=10" +
+    "&apiKey=" + API_KEY_NA
+  );
 
 
   await fetch(
     `http://newsapi.org/v2/everything?` +
     (category ? "q=" + category : "q=all") +
+    (author ? "," + author : "") +
+    (sources ? "," + sources : "") +
+
     (loadMore ? "&page=" + page : "") +
     "&pageSize=10" +
     "&apiKey=" + API_KEY_NA
@@ -101,13 +108,15 @@ export const NewsServiceEverything = async (options?: options, loadMore?: boolea
           finalData.push(value);
         }
       });
-      console.log("newsapi",page,finalData);
     })
     .catch((error) => console.error("Error:", error));
   
   await fetch(
     `https://api.nytimes.com/svc/search/v2/articlesearch.json?` +
     (category ? "q=" + category : "") +
+    (author ? "," + author : "") +
+    (sources ? "," + sources : "") +
+
     (loadMore ? "&page=" + page : "") +
     "&page-size=10" +
     "&api-key=" +
@@ -132,6 +141,8 @@ export const NewsServiceEverything = async (options?: options, loadMore?: boolea
   await fetch(
     `https://content.guardianapis.com/search?` +
     (category ? "&sectionName=" + category : "") +
+    (author ? "," + author : "") +
+    (sources ? "," + sources : "") +
     (loadMore ? "&page=" + page : "") +
     "&page-size=10" +
     "&api-key=" +
@@ -140,7 +151,6 @@ export const NewsServiceEverything = async (options?: options, loadMore?: boolea
     .then((response) => response.json())
     .then((data) => {
       data.response.results.forEach((data: any, index: number) => {
-        //console.log("fff ", data)
         let value = {
           id: data.id,
           category: data.sectionName,

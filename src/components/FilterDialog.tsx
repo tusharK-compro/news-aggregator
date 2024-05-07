@@ -69,9 +69,6 @@ export default function FilterDialog(props:FilterDialogprops) {
     categories: [],
     authors: []
   });
-   React.useEffect(()=>{
-      console.log(preferences)
-   },[preferences])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -89,15 +86,15 @@ export default function FilterDialog(props:FilterDialogprops) {
     let sources =  preferences?.sources?.length>0 ? preferences.sources:undefined ;
     let author =  preferences?.authors?.length>0 ? preferences.authors:undefined ;;
 
-  
+    setData([]);
     NewsServiceEverything({category,sources,author}).then((res) => {
        setData(res);
+       console.log(res);
     });
     setOpen(false);
 
     
   }
-  console.log("pref ", preferences );
 
   return (
     <React.Fragment>

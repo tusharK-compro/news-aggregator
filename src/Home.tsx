@@ -36,11 +36,10 @@ function Home() {
   const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
-    // NewsServiceEverything().then((res) => {
-    //   setData(res);
-    // });
+    NewsServiceEverything().then((res) => {
+      setData(res);
+    });
   }, []);
-  console.log("data ", data);
 
   return (
     <>
