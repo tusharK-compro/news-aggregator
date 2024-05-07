@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import {
   Box,
@@ -26,57 +26,75 @@ const StyledHeadComponent = styled("div")(() => ({
 }));
 
 function Home() {
-  const handleLoadMore = () =>{
-    setPage(page+1);
-    NewsSearch("run",{},true,page).then((res) => {
-      setData((prev:any)=>[...prev,...res]);
+  const handleLoadMore = () => {
+    setPage(page + 1);
+    NewsSearch("run", {}, true, page).then((res) => {
+      setData((prev: any) => [...prev, ...res]);
     });
-  }
+  };
   const [data, setData] = useState<any>();
   const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState(false);
 
   useEffect(() => {
     NewsServiceEverything().then((res) => {
       setData(res);
     });
-  }, []);
+  }, [search]);
+
+  const handleBack = () => {
+    setSearch(false);
+  };
 
   return (
     <>
-      <Header />
+      <Header setSearch={setSearch} setData={setData} />
       <StyledFeed>
         <StyledHeadComponent>
           <Typography
             textAlign="left"
             variant="h5"
             component="div"
-            sx={{ margin: { xs: '0', sm: '0 0 8px' } }}
+            sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
           >
             News feed
           </Typography>
-          {/* <StyledFilterButton
-                variant="text"
-                color="primary"
-                startIcon={<TuneOutlinedIcon />}
-                >
-                Preferences
-                </StyledFilterButton> */}
+
           <FilterDialog setData={setData} />
         </StyledHeadComponent>
+        <Box display="flex" alignItems="flex-start">
+          {search && (
+            <Button
+              onClick={handleBack}
+              variant="text"
+              sx={{ marginLeft: "-10px" }}
+            >
+              Back
+            </Button>
+          )}
+        </Box>
+        {search && (
+          <Typography
+            textAlign="left"
+            variant="h5"
+            component="div"
+            sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
+          >
+            Search results
+          </Typography>
+        )}
         {data && data.length > 1 ? (
           <>
-          {
-            data.map((news: any) => {
-            return (
-              <NewsComponent
-                title={news.title}
-                desc={news.description}
-                extLink={news.webUrl}
-              />
-            );
-          })
-          }
-          <Button onClick={handleLoadMore}>Load More</Button>
+            {data.map((news: any) => {
+              return (
+                <NewsComponent
+                  title={news.title}
+                  desc={news.description}
+                  extLink={news.webUrl}
+                />
+              );
+            })}
+            <Button onClick={handleLoadMore}>Load More</Button>
           </>
         ) : (
           <Box sx={{ height: "100vh", py: 22 }}>
