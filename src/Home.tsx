@@ -36,9 +36,9 @@ function Home() {
   const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
-    NewsServiceEverything().then((res) => {
-      setData(res);
-    });
+    // NewsServiceEverything().then((res) => {
+    //   setData(res);
+    // });
   }, []);
   console.log("data ", data);
 
@@ -62,7 +62,7 @@ function Home() {
                 >
                 Preferences
                 </StyledFilterButton> */}
-          <FilterDialog />
+          <FilterDialog setData={setData} />
         </StyledHeadComponent>
         {data && data.length > 1 ? (
           <>
