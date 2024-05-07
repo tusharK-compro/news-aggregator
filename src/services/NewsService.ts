@@ -8,7 +8,7 @@ const NYSearch = async (searchQuery: string) => {
   )
     .then((response) => response.json())
     .then((data) => {
-      data.response.docs.map((data: any, index: number) => {
+      data.response.docs.forEach((data: any, index: number) => {
         let value = {
           id: index,
           date: data.pub_date,
@@ -30,7 +30,7 @@ export const NewsAPISearch = async () => {
   await fetch(`https://newsapi.org/v2/everything?q=apple&apiKey=` + API_KEY)
     .then((response) => response.json())
     .then((data) => {
-      data.articles.map((data: any, index: number) => {
+      data.articles.forEach((data: any, index: number) => {
         if (data.title != "[Removed]") {
           let value = {
             id: index,
@@ -61,7 +61,7 @@ export const NewsServiceEverything = async (
     )
       .then((response) => response.json())
       .then((data) => {
-        data.results.map((data: any, index: number) => {
+        data.results.forEach((data: any, index: number) => {
           let value = {
             id: index,
             category: data.section,
@@ -85,7 +85,7 @@ export const NewsServiceEverything = async (
     )
       .then((response) => response.json())
       .then((data) => {
-        data.response.results.map((data: any, index: number) => {
+        data.response.results.forEach((data: any, index: number) => {
           //console.log("fff ", data)
           let value = {
             id: data.id,
@@ -106,7 +106,7 @@ export const NewsServiceEverything = async (
     )
       .then((response) => response.json())
       .then((data) => {
-        data.articles.map((data: any, index: number) => {
+        data.articles.forEach((data: any, index: number) => {
           if (data.title != "[Removed]") {
             let value = {
               id: index,
