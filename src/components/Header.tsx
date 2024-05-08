@@ -11,6 +11,7 @@ import { NewsSearch } from "../services/NewsService";
 interface HeaderProps {
   setData: any;
   setSearch: any;
+  setKeywords: any;
 }
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -55,13 +56,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header(props: HeaderProps) {
-  const { setData, setSearch } = props;
+  const { setData, setSearch, setKeywords } = props;
 
   const handleKeyPress = (event: any) => {
     if (event.key === "Enter") {
       setData([]);
       setSearch(true);
       let query: String = event.target.value;
+      setKeywords(query);
       if (query.length > 0) {
         NewsSearch(query).then((res) => {
           setData(res);

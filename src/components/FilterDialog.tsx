@@ -13,7 +13,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Filter from "./Filter";
-import { NewsServiceEverything } from "../services/NewsService";
+import { NewsSearch, NewsServiceEverything } from "../services/NewsService";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import dayjs, { Dayjs } from "dayjs";
 interface TabPanelProps {
@@ -24,6 +24,11 @@ interface TabPanelProps {
 interface FilterDialogprops {
   setData?: any;
   filter?: boolean;
+  date?: any;
+  setDate? : any;
+  preference?: any;
+  setPreference?: any;
+  keywords?: string;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -60,7 +65,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 export default function FilterDialog(props: FilterDialogprops) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
-  const { setData, filter } = props;
+  const { setData, filter, date, setDate, preference, setPreference,keywords } = props;
   const preferencesList = {
     sources: ["Yahoo Entertainment", "Gizmodo.com", "BBC News", "Wired"],
     categories: [
@@ -83,12 +88,7 @@ export default function FilterDialog(props: FilterDialogprops) {
       "Tom Warren",
     ],
   };
-  const [preferences, setPreferences] = React.useState({
-    sources: [],
-    categories: [],
-    authors: [],
-  });
-  const [date, setDate] = React.useState<Dayjs>(dayjs("2022-04-17"));
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -103,15 +103,15 @@ export default function FilterDialog(props: FilterDialogprops) {
   const handleClear = () => {};
   const handlePreferences = () => {
     let category =
-      preferences?.categories?.length > 0 ? preferences.categories : undefined;
+      preference?.categories?.length > 0 ? preference.categories : undefined;
     let sources =
-      preferences?.sources?.length > 0 ? preferences.sources : undefined;
+      preference?.sources?.length > 0 ? preference.sources : undefined;
     let author =
-      preferences?.authors?.length > 0 ? preferences.authors : undefined;
+      preference?.authors?.length > 0 ? preference.authors : undefined;
 
     setData([]);
     let newsDate = date.year() + "-" + date.month() + "-" + date.date();
-    NewsServiceEverything({ category, sources, author, date: newsDate }).then(
+    NewsSearch(keywords ,{ category, sources, date: newsDate }).then(
       (res) => {
         setData(res);
       }
@@ -192,25 +192,25 @@ export default function FilterDialog(props: FilterDialogprops) {
                 date={date}
                 setDate={setDate}
                 filters={filter}
-                setPreference={setPreferences}
+                setPreference={setPreference}
                 type="sources"
-                preference={preferences}
+                preference={props.preference}
                 labels={preferencesList.sources}
               />
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Filter
-                setPreference={setPreferences}
+                setPreference={setPreference}
                 type="categories"
-                preference={preferences}
+                preference={preference}
                 labels={preferencesList.categories}
               />
             </TabPanel>
             <TabPanel value={value} index={2}>
               <Filter
-                setPreference={setPreferences}
+                setPreference={setPreference}
                 type="authors"
-                preference={preferences}
+                preference={preference}
                 labels={preferencesList.authors}
               />
             </TabPanel>

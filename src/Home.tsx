@@ -10,6 +10,7 @@ import {
 import NewsComponent from "./components/NewsComponent";
 import FilterDialog from "./components/FilterDialog";
 import { NewsSearch, NewsServiceEverything } from "./services/NewsService";
+import dayjs, { Dayjs } from "dayjs";
 const StyledFeed = styled("div")(({ theme }) => ({
   padding: "20px",
 
@@ -26,17 +27,40 @@ const StyledHeadComponent = styled("div")(() => ({
 }));
 
 function Home() {
-  const handleLoadMore = () => {
-    setPage(page + 1);
-    NewsSearch("run", {}, true, page).then((res) => {
-      setData((prev: any) => [...prev, ...res]);
-    });
-  };
   const [data, setData] = useState<any>();
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState(false);
-
+  const [keyword, setKeyword] = useState();
+  const [preferences, setPreferences] = useState({
+    sources: [],
+    categories: [],
+    authors: [],
+  });
+  const [date, setDate] = useState<Dayjs>(dayjs("2022-04-17"));
+  
+  const handleLoadMore = () => {
+    setPage(page + 1);
+    let category =
+    preferences.categories?.length > 0 ? preferences.categories : undefined;
+  let sources =
+    preferences.sources?.length > 0 ? preferences.sources : undefined;
+  
+  let newsDate = date.year() + "-" + date.month() + "-" + date.date();
+    if(search){
+      NewsSearch(keyword, { category, sources, date:newsDate }, true, page).then((res) => {
+        setData((prev: any) => [...prev, ...res]);
+      });
+    }
+    else{
+    NewsServiceEverything(preferences,true,page).then(
+      (res) => {
+        setData(res);
+      }
+    );
+    }
+  };
   useEffect(() => {
+   if(!search)
     NewsServiceEverything().then((res) => {
       setData(res);
     });
@@ -48,7 +72,7 @@ function Home() {
 
   return (
     <>
-      <Header setSearch={setSearch} setData={setData} />
+      <Header setKeywords={setKeyword} setSearch={setSearch} setData={setData} />
       <StyledFeed>
         
         <Box display="flex" alignItems="flex-start">
@@ -73,7 +97,7 @@ function Home() {
           >
             Search results
           </Typography>
-        <FilterDialog filter setData={setData} />
+        <FilterDialog filter preference={preferences} keywords={keyword} setPreference={setPreferences} date={date} setDate={setDate} setData={setData} />
 
           </StyledHeadComponent>
         ): <StyledHeadComponent>
@@ -86,7 +110,7 @@ function Home() {
           News feed
         </Typography>
 
-        <FilterDialog setData={setData} />
+        <FilterDialog preference={preferences} setPreference={setPreferences} date={date} setDate={setDate} setData={setData} />
       </StyledHeadComponent>}
         {data && data.length > 1 ? (
           <>

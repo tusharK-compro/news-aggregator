@@ -18,6 +18,7 @@ const FilterGroup = styled(FormGroup)(() => ({
   padding: "0 10px",
 }));
 const handlePreferences = (e: any, prop: any) => {
+  console.log(prop)
   const type = prop.type;
   const typeArr = [...prop.preference[type], e.target.value];
   const prefrenceData = { ...prop.preference, [type]: typeArr };
