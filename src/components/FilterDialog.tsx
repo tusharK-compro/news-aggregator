@@ -100,7 +100,13 @@ export default function FilterDialog(props: FilterDialogprops) {
     setOpen(false);
   };
 
-  const handleClear = () => {};
+  const handleClear = () => {
+    setPreference({
+      sources: [],
+      categories: [],
+      authors: [],
+    })
+  };
   const handlePreferences = () => {
     let category =
       preference?.categories?.length > 0 ? preference.categories : undefined;
