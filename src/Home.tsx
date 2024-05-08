@@ -50,18 +50,7 @@ function Home() {
     <>
       <Header setSearch={setSearch} setData={setData} />
       <StyledFeed>
-        <StyledHeadComponent>
-          <Typography
-            textAlign="left"
-            variant="h5"
-            component="div"
-            sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
-          >
-            News feed
-          </Typography>
-
-          <FilterDialog setData={setData} />
-        </StyledHeadComponent>
+        
         <Box display="flex" alignItems="flex-start">
           {search && (
             <Button
@@ -73,7 +62,9 @@ function Home() {
             </Button>
           )}
         </Box>
-        {search && (
+        {search ? 
+         (<StyledHeadComponent>
+
           <Typography
             textAlign="left"
             variant="h5"
@@ -82,7 +73,21 @@ function Home() {
           >
             Search results
           </Typography>
-        )}
+        <FilterDialog filter setData={setData} />
+
+          </StyledHeadComponent>
+        ): <StyledHeadComponent>
+        <Typography
+          textAlign="left"
+          variant="h5"
+          component="div"
+          sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
+        >
+          News feed
+        </Typography>
+
+        <FilterDialog setData={setData} />
+      </StyledHeadComponent>}
         {data && data.length > 1 ? (
           <>
             {data.map((news: any) => {

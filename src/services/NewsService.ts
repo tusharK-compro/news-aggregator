@@ -33,6 +33,7 @@ export const NewsSearch = async (searchQuery?:String, options?: options, loadMor
   
   await fetch(`https://newsapi.org/v2/everything?` + (searchQuery?`q=${searchQuery}`:'q=all') +(loadMore ? "&page=" + page : "") +
   "&pageSize=10" +
+  (date ? "&from=" + date : "")+
   "&apiKey=" + API_KEY_NA)
   .then((response) => response.json())
   .then((data) => {
@@ -74,13 +75,7 @@ export const NewsServiceEverything = async (options?: options, loadMore?: boolea
   const category = options?.category?.join();
   const author = options?.author?.join();
   const sources = options?.sources?.join();
-  console.log(
-    `http://newsapi.org/v2/everything?` +
-    (category ? "q=" + category : "q=all") +
-    (loadMore ? "&page=" + page : "") +
-    "&pageSize=10" +
-    "&apiKey=" + API_KEY_NA
-  );
+
 
 
   await fetch(

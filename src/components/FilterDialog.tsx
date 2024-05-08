@@ -14,14 +14,16 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Filter from "./Filter";
 import { NewsServiceEverything } from "../services/NewsService";
-
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import dayjs, { Dayjs } from "dayjs";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
-interface FilterDialogprops{
-  setData?:any
+interface FilterDialogprops {
+  setData?: any;
+  filter?: boolean;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -55,21 +57,38 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function FilterDialog(props:FilterDialogprops) {
+export default function FilterDialog(props: FilterDialogprops) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
-  const {setData}=props;
-  const preferencesList={
-    sources:['Yahoo Entertainment','Gizmodo.com','BBC News','Wired'],
-    categories:['Sports','Celebrity','World','Politics','Wildlife','Art','Terrorism','Film','Medical',"Technology"],
-    authors:['Lawrence Bonk','Will Shanklin','Andrew Webster','James Whitbrook','Tom Warren']
-  }
+  const { setData, filter } = props;
+  const preferencesList = {
+    sources: ["Yahoo Entertainment", "Gizmodo.com", "BBC News", "Wired"],
+    categories: [
+      "Sports",
+      "Celebrity",
+      "World",
+      "Politics",
+      "Wildlife",
+      "Art",
+      "Terrorism",
+      "Film",
+      "Medical",
+      "Technology",
+    ],
+    authors: [
+      "Lawrence Bonk",
+      "Will Shanklin",
+      "Andrew Webster",
+      "James Whitbrook",
+      "Tom Warren",
+    ],
+  };
   const [preferences, setPreferences] = React.useState({
     sources: [],
     categories: [],
-    authors: []
+    authors: [],
   });
-
+  const [date, setDate] = React.useState<Dayjs>(dayjs("2022-04-17"));
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -78,35 +97,52 @@ export default function FilterDialog(props:FilterDialogprops) {
     setOpen(true);
   };
   const handleClose = () => {
+    setOpen(false);
   };
 
   const handleClear = () => {};
-  const handlePreferences = ()=>{
-    let category = preferences?.categories?.length>0 ? preferences.categories:undefined ;
-    let sources =  preferences?.sources?.length>0 ? preferences.sources:undefined ;
-    let author =  preferences?.authors?.length>0 ? preferences.authors:undefined ;;
+  const handlePreferences = () => {
+    let category =
+      preferences?.categories?.length > 0 ? preferences.categories : undefined;
+    let sources =
+      preferences?.sources?.length > 0 ? preferences.sources : undefined;
+    let author =
+      preferences?.authors?.length > 0 ? preferences.authors : undefined;
 
     setData([]);
-    NewsServiceEverything({category,sources,author}).then((res) => {
-       setData(res);
-       console.log(res);
-    });
+    let newsDate = date.year() + "-" + date.month() + "-" + date.date();
+    NewsServiceEverything({ category, sources, author, date: newsDate }).then(
+      (res) => {
+        setData(res);
+      }
+    );
     setOpen(false);
-
-    
-  }
+  };
 
   return (
     <React.Fragment>
-      <Button
-        variant="text"
-        color="primary"
-        sx={{ textTransform: "none", display: { xs: "none", sm: "flex" } }}
-        onClick={handleClickOpen}
-        startIcon={<TuneOutlinedIcon />}
-      >
-        Preferences
-      </Button>
+      {filter ? (
+        <Button
+          variant="text"
+          color="primary"
+          sx={{ textTransform: "none", display: { xs: "none", sm: "flex" } }}
+          onClick={handleClickOpen}
+          startIcon={<FilterAltOutlinedIcon />}
+        >
+          Filters
+        </Button>
+      ) : (
+        <Button
+          variant="text"
+          color="primary"
+          sx={{ textTransform: "none", display: { xs: "none", sm: "flex" } }}
+          onClick={handleClickOpen}
+          startIcon={<TuneOutlinedIcon />}
+        >
+          Preferences
+        </Button>
+      )}
+
       <Button
         sx={{ display: { xs: "block", sm: "none" } }}
         onClick={handleClickOpen}
@@ -147,18 +183,36 @@ export default function FilterDialog(props:FilterDialogprops) {
               onChange={handleChange}
               sx={{ overflow: "unset" }}
             >
-              <Tab label="Sources" />
+              {filter ? <Tab label="Date" /> : <Tab label="Sources" />}
               <Tab label="Categories" />
               <Tab label="Authors" />
             </Tabs>
             <TabPanel value={value} index={0}>
-              <Filter setPreference={setPreferences} type="sources" preference={preferences} labels={preferencesList.sources}/>
+              <Filter
+                date={date}
+                setDate={setDate}
+                filters={filter}
+                setPreference={setPreferences}
+                type="sources"
+                preference={preferences}
+                labels={preferencesList.sources}
+              />
             </TabPanel>
             <TabPanel value={value} index={1}>
-            <Filter setPreference={setPreferences} type="categories" preference={preferences} labels={preferencesList.categories}/>
+              <Filter
+                setPreference={setPreferences}
+                type="categories"
+                preference={preferences}
+                labels={preferencesList.categories}
+              />
             </TabPanel>
             <TabPanel value={value} index={2}>
-            <Filter setPreference={setPreferences} type="authors" preference={preferences} labels={preferencesList.authors}/>
+              <Filter
+                setPreference={setPreferences}
+                type="authors"
+                preference={preferences}
+                labels={preferencesList.authors}
+              />
             </TabPanel>
           </Box>
         </DialogContent>
