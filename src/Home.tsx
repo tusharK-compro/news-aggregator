@@ -30,51 +30,51 @@ function Home() {
   const [data, setData] = useState<any>();
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState(false);
-  const [keyword, setKeyword] = useState();
+  const [keyword, setKeyword] = useState<String>("");
   const [preferences, setPreferences] = useState({
     sources: [],
     categories: [],
     authors: [],
   });
   const [date, setDate] = useState<Dayjs>(dayjs("2022-04-17"));
-  
+
   const handleLoadMore = () => {
     setPage(page + 1);
     let category =
-    preferences.categories?.length > 0 ? preferences.categories : undefined;
-  let sources =
-    preferences.sources?.length > 0 ? preferences.sources : undefined;
-  
-  let newsDate = date.year() + "-" + date.month() + "-" + date.date();
-    if(search){
-      NewsSearch(keyword, { category, sources, date:newsDate }, true, page).then((res) => {
+      preferences.categories?.length > 0 ? preferences.categories : undefined;
+    let sources =
+      preferences.sources?.length > 0 ? preferences.sources : undefined;
+
+    let newsDate = date.year() + "-" + date.month() + "-" + date.date();
+    if (search) {
+      NewsSearch(keyword, { category, sources, date: newsDate }, true, page).then((res) => {
         setData((prev: any) => [...prev, ...res]);
       });
     }
-    else{
-    NewsServiceEverything(preferences,true,page).then(
-      (res) => {
-        setData(res);
-      }
-    );
+    else {
+      NewsServiceEverything(preferences, true, page).then(
+        (res) => {
+          setData(res);
+        }
+      );
     }
   };
   useEffect(() => {
-   if(!search)
-    NewsServiceEverything().then((res) => {
-      setData(res);
-    });
+    if (!search)
+      NewsServiceEverything().then((res) => {
+        setData(res);
+      });
   }, [search]);
 
   const handleBack = () => {
     setSearch(false);
+    setKeyword("");
   };
 
   return (
     <>
       <Header setKeywords={setKeyword} setSearch={setSearch} setData={setData} />
       <StyledFeed>
-        
         <Box display="flex" alignItems="flex-start">
           {search && (
             <Button
@@ -86,37 +86,37 @@ function Home() {
             </Button>
           )}
         </Box>
-        {search ? 
-         (<StyledHeadComponent>
+        {search ?
+          (<StyledHeadComponent>
 
-          <Typography
-            textAlign="left"
-            variant="h5"
-            component="div"
-            sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
-          >
-            Search results
-          </Typography>
-        <FilterDialog filter preference={preferences} keywords={keyword} setPreference={setPreferences} date={date} setDate={setDate} setData={setData} />
-
+            <Typography
+              textAlign="left"
+              variant="h5"
+              component="div"
+              sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
+            >
+              Search results
+            </Typography>
+            <FilterDialog filter preference={preferences} keywords={keyword} setPreference={setPreferences} date={date} setDate={setDate} setData={setData} />
           </StyledHeadComponent>
-        ): <StyledHeadComponent>
-        <Typography
-          textAlign="left"
-          variant="h5"
-          component="div"
-          sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
-        >
-          News feed
-        </Typography>
+          ) : <StyledHeadComponent>
+            <Typography
+              textAlign="left"
+              variant="h5"
+              component="div"
+              sx={{ margin: { xs: "0", sm: "0 0 8px" } }}
+            >
+              News feed
+            </Typography>
 
-        <FilterDialog preference={preferences} setPreference={setPreferences} date={date} setDate={setDate} setData={setData} />
-      </StyledHeadComponent>}
+            <FilterDialog preference={preferences} setPreference={setPreferences} date={date} setDate={setDate} setData={setData} />
+          </StyledHeadComponent>}
         {data && data.length > 1 ? (
           <>
-            {data.map((news: any) => {
+            {data.map((news: any, index: number) => {
               return (
                 <NewsComponent
+                  key={index}
                   title={news.title}
                   desc={news.description}
                   extLink={news.webUrl}

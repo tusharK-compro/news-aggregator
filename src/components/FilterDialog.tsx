@@ -28,7 +28,7 @@ interface FilterDialogprops {
   setDate? : any;
   preference?: any;
   setPreference?: any;
-  keywords?: string;
+  keywords?: String;
 }
 
 function TabPanel(props: TabPanelProps) {

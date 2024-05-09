@@ -37,6 +37,7 @@ export const NewsSearch = async (searchQuery?:String, options?: options, loadMor
   "&apiKey=" + API_KEY_NA)
   .then((response) => response.json())
   .then((data) => {
+    if(data)
       data.articles.forEach((data: any, index: number) => {
         if (data.title != "[Removed]") {
           let value = {
