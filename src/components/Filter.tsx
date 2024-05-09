@@ -9,7 +9,7 @@ interface FilterProps {
   labels: Array<String>;
   setPreference?: any;
   preference?: any;
-  type?: String;
+  type?: any;
   filters?: boolean;
   setDate?:any;
   date?:any
@@ -18,17 +18,23 @@ const FilterGroup = styled(FormGroup)(() => ({
   padding: "0 10px",
 }));
 const handlePreferences = (e: any, prop: any) => {
-  console.log(prop)
+  
+  console.log(e)
   const type = prop.type;
-  const typeArr = [...prop.preference[type], e.target.value];
-  const prefrenceData = { ...prop.preference, [type]: typeArr };
+  let typeArr ;
+  let prefrenceData;
+  if(e.target.checked){
+    typeArr = [...prop.preference[type], e.target.value];
+  }
+  else{
+    const index = prop.preference[type].indexOf(e.target.value);
+    typeArr = prop.preference[type].slice(index+1,1);  
+  }
+  prefrenceData = { ...prop.preference, [type]: typeArr };
   prop.setPreference(prefrenceData);
 };
 
 function Filter(props: FilterProps) {
-
-  
-
   return (
     <>
       {props.filters == true ? (
@@ -45,7 +51,7 @@ function Filter(props: FilterProps) {
               <FormControlLabel
                 onChange={(e) => handlePreferences(e, props)}
                 value={preference}
-                control={<Checkbox />}
+                control={props.preference[props.type].includes(preference)?<Checkbox defaultChecked/>: <Checkbox/>}
                 label={preference}
               />
             );
